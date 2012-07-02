@@ -10,6 +10,9 @@ Modify
 
 To __your__ values.
 
+
+# Based on <https://github.com/azat-co/super-simple-backbone-starter-kit>
+
 ## Dependancies (already included)
 
 * [RequireJS](http://requirejs.org/) 2.0.2 included in /libs
