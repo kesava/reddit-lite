@@ -1,4 +1,14 @@
-# Super Simple Backbone Starter Kit
+# Message Board
+
+Message Board: Backbone + Parse.com
+
+## Parse.com
+
+Modify 
+	
+		Parse.initialize("...", "...");
+
+To __your__ values.
 
 ## Dependancies (already included)
 

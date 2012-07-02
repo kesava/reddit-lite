@@ -1,5 +1,5 @@
 require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'], function (headerTpl, homeTpl, footerTpl) {
-	
+	Parse.initialize("Zc36GIp6WyzKIB9HvqRBEGnIeMO0X21rDbVwGPvp", "r5zTZ9eydAcnRhAUI6k3XazS1JSnOPLbiaT1cWY6");
 	var ApplicationRouter = Backbone.Router.extend({
 		routes: {
 			"": "home",
@@ -21,12 +21,9 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 		el: "#header",
 		templateFileName: "header.html",
 		template: headerTpl,
-
 		initialize: function() {
-			// $.get(this.templateFileName, function(data){console.log(data);this.template=data});		
 		},
 		render: function() {
-			// console.log(this.template)
 			$(this.el).html(_.template(this.template));
 		}
 	});
@@ -37,58 +34,51 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 		render: function() {
 			this.$el.html(_.template(this.template));
 		}
+	});
+	Message = Parse.Object.extend({
+		className: "MessageBoard"
 	})
+	MessageBoard = Parse.Collection.extend ({
+		model: Message
+	});
+	
 	HomeView = Backbone.View.extend({
 		el: "#content",
-		// template: "home.html",
 		template: homeTpl,
 		events: {
 			"click #send": "saveMessage"
 		},
-		messageBoard: null,
-		
-		// collection: Messages,
+
 		initialize: function() {
-			Parse.initialize("Zc36GIp6WyzKIB9HvqRBEGnIeMO0X21rDbVwGPvp", "r5zTZ9eydAcnRhAUI6k3XazS1JSnOPLbiaT1cWY6");
-			MessageBoard = Parse.Object.extend("MessageBoard");
-			this.messageBoard = new MessageBoard();
-			console.log("init mb");
-			this.getMessages();
-		},
-		getMessages: function(){
-			if (this.messageBoard) {
-				console.log(this.messageBoard);
-			}
-			else {
-				console.log("messageBoard is not set");
-			}
+			this.collection = new MessageBoard();
+			this.collection.bind("all", this.render, this);
+			this.collection.fetch();
+			this.collection.on("add", function(message) {
+				message.save(null, {
+					success: function(message) {
+						console.log('saved '+message);
+					},
+					error: function(message) {
+						console.log('error');
+					}
+				});
+				console.log('saved'+message);
+			})
 		},
 		saveMessage: function(){
 			var newMessageForm=$("#new-message");
 			var username=newMessageForm.find('[name="username"]').attr('value');
 			var message=newMessageForm.find('[name="message"]').attr('value');
-			this.messageBoard.save({
+			this.collection.add({
 				"username": username,
 				"message": message
-				},{
-				success: function(e) {
-					console.log('saved');
-				},
-				error: function(e) {
-					console.log('error');
-				}
-			});
+				});
 		},
 		render: function() {
-			$(this.el).html(_.template(this.template));
+			console.log(this.collection)
+			$(this.el).html(_.template(this.template, this.collection));
 		}
 	});
-	// Messages = Backbone.ParseCollection.extend({
-	// 	url: "/data/messages"
-	// });
-	// Message = Backbone.ParseModel.extend({
-	// 	urlRoot: "/data/messages"
-	// });
 
 	app = new ApplicationRouter();
 	Backbone.history.start();	
