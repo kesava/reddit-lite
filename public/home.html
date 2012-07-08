@@ -1,11 +1,11 @@
 <div class="row-fluid"  id="message-board">
 	<div class="span12">
 		<table class="table table-bordered table-striped">
-			<caption>Message Board</caption>
 			<thead>
 				<tr>
-					<th class="span2">Username</th>
+					<th>Username</th>
 					<th>Message</th>
+					<th>Votes</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -14,12 +14,13 @@
 						<tr>
 							<td><%= value.attributes.username %></td>
 							<td><%= value.attributes.message %></td>
+							<td><%= value.attributes.votes %>&nbsp;<a data-id=<%= value.cid %> class="btn btn-success upvote">&uarr;</a>&nbsp;<a data-id=<%= value.cid %> class="btn btn-danger downvote">&darr;</a></td>
 						</tr>
 					<% });
 				}
 				else { %>
 				<tr>
-					<td colspan="2">No messages yet</td>						
+					<td colspan="3">No messages yet</td>						
 				</tr>
 				<%}%>
 			</tbody>
@@ -29,9 +30,9 @@
 <div class="row-fluid"  id="new-message">
 	<div class="span12">
 		<form class="well form-inline">
-		  <input type="text" name="username" class="input-small" placeholder="Username" />
-		  <input type="text" name="message" class="input-small" placeholder="Message Text" />
-		  <a id="send" class="btn btn-primary">SEND</a>
+		  <input type="text" name="username" class="input-small" placeholder="Username" /><br/><br/>
+		  <textarea class="input-xlarge" id="textarea" rows="3" name="message" placeholder="Message Text"></textarea>
+		  <a id="send" class="btn btn-primary">Submit an Idea</a>
 		</form>
 	</div>
 </div>

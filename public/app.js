@@ -1,5 +1,5 @@
 require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'], function (headerTpl, homeTpl, footerTpl) {
-	Parse.initialize("Zc36GIp6WyzKIB9HvqRBEGnIeMO0X21rDbVwGPvp", "r5zTZ9eydAcnRhAUI6k3XazS1JSnOPLbiaT1cWY6");
+	Parse.initialize("BST7uGEZOLUSkrD0DzwoyZaMBlwo7SLGlQrKEWUZ", "czAdRHLd6l9jwSgdTacvHXaDCYu66ulHf1vF8u1q");
 	var ApplicationRouter = Backbone.Router.extend({
 		routes: {
 			"": "home",
@@ -46,7 +46,9 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 		el: "#content",
 		template: homeTpl,
 		events: {
-			"click #send": "saveMessage"
+			"click #send": "saveMessage",
+			"click .upvote": "upVoteIdea",
+			"click .downvote": "downVoteIdea"
 		},
 
 		initialize: function() {
@@ -69,10 +71,29 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 			var newMessageForm=$("#new-message");
 			var username=newMessageForm.find('[name="username"]').attr('value');
 			var message=newMessageForm.find('[name="message"]').attr('value');
+			var votes = newMessageForm.find('[name="votes"]').attr('value') || 1;
 			this.collection.add({
 				"username": username,
-				"message": message
+				"message": message,
+				"votes": votes
 				});
+		},
+		upVoteIdea: function(e) {
+			e.preventDefault();
+			var id = $(e.currentTarget).data("id");
+			console.log("Up Vote this Idea");
+			idea = this.collection.getByCid(id);
+			idea.attributes.votes = idea.attributes.votes + 1;
+			idea.save(idea.attributes);
+
+		},
+		downVoteIdea: function(e) {
+			e.preventDefault();
+			var id = $(e.currentTarget).data("id");
+			console.log("Down Vote this Idea");
+			idea = this.collection.getByCid(id);
+			idea.attributes.votes = idea.attributes.votes - 1;
+			idea.save(idea.attributes);
 		},
 		render: function() {
 			console.log(this.collection)
