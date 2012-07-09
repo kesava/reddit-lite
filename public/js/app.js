@@ -72,10 +72,15 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 			var username=newMessageForm.find('[name="username"]').attr('value');
 			var message=newMessageForm.find('[name="message"]').attr('value');
 			var votes = newMessageForm.find('[name="votes"]').attr('value') || 1;
+			var upvotes = newMessageForm.find('[name="upvotes"]').attr('value') || 1;
+			var downvotes = newMessageForm.find('[name="downvotes"]').attr('value') || 0;
+
 			this.collection.add({
 				"username": username,
 				"message": message,
-				"votes": votes
+				"votes": votes,
+				"upvotes": upvotes,
+				"downvotes": downvotes
 				});
 		},
 		upVoteIdea: function(e) {
@@ -84,6 +89,7 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 			console.log("Up Vote this Idea");
 			idea = this.collection.getByCid(id);
 			idea.attributes.votes = idea.attributes.votes + 1;
+			idea.attributes.upvotes = idea.attributes.upvotes + 1
 			idea.save(idea.attributes);
 
 		},
@@ -93,6 +99,7 @@ require(['libs/text!header.html', 'libs/text!home.html', 'libs/text!footer.html'
 			console.log("Down Vote this Idea");
 			idea = this.collection.getByCid(id);
 			idea.attributes.votes = idea.attributes.votes - 1;
+			idea.attributes.downvotes = idea.attributes.downvotes - 1;
 			idea.save(idea.attributes);
 		},
 		render: function() {

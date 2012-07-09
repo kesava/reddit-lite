@@ -14,7 +14,7 @@
 						<tr>
 							<td><%= value.attributes.username %></td>
 							<td><%= value.attributes.message %></td>
-							<td><%= value.attributes.votes %>&nbsp;<a data-id=<%= value.cid %> class="btn btn-success upvote">&uarr;</a>&nbsp;<a data-id=<%= value.cid %> class="btn btn-danger downvote">&darr;</a></td>
+							<td><%= value.attributes.votes %> votes (<%= value.attributes.upvotes %> + <%= value.attributes.downvotes %>)&nbsp;<a data-id=<%= value.cid %> class="btn btn-success upvote">&uarr;</a>&nbsp;<a data-id=<%= value.cid %> class="btn btn-danger downvote">&darr;</a></td>
 						</tr>
 					<% });
 				}
